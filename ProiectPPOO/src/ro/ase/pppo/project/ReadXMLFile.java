@@ -8,19 +8,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class ReadXMLFile {
-	public static void readXwriteF()  {
+public class ReadXMLFile extends Props{
+	public static void readXwriteF() {
 		
 		FileModerator.writeToFile("Attributes", "Values");
 		double totalValue = 0;
 		try {
-			Props pS = new Props();
-			StringBuilder sb = new StringBuilder();
-			sb.append(pS.accessProp().getProperty("pathone"))
-				.append(pS.accessProp().get("xml"))
-				.append(pS.accessProp().getProperty("extensiontwo"));
+			//TODO
 			
-			File fXml = new File(sb.toString());
+			File fXml = new File(accessProp().getProperty("XML"));
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

@@ -6,11 +6,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Props {
-	public Properties accessProp() throws FileNotFoundException{
+	public static Properties accessProp() throws FileNotFoundException{
 		
 		Properties prop = new Properties();
-		String propFileName = "config.properties";
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();           
+		InputStream inputStream = loader.getResourceAsStream("config.properties");
 		 
 		if (inputStream != null) {
 			try {
@@ -21,7 +21,7 @@ public class Props {
 				e.printStackTrace();
 			}
 		} else {
-			throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			throw new FileNotFoundException("property file not found.");
 		}
 		return prop;
 	}

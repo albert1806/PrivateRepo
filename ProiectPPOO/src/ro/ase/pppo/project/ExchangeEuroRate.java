@@ -4,23 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ExchangeEuroRate {
+public class ExchangeEuroRate extends Props{
+	
 	public static double getCurencyExchangeRate() {
 
 		double exchange = 1;
 
 		BufferedReader br = null;
-		StringBuilder sb = new StringBuilder();
 		
 		try {
-			Props pS = new Props();
-			sb.append(pS.accessProp().getProperty("pathtwo"))
-					.append(pS.accessProp().getProperty("currency"))
-					.append(pS.accessProp().getProperty("extensionone"));
-
 			String sCurrentLine;
 
-			br = new BufferedReader(new FileReader(sb.toString()));
+			br = new BufferedReader(new FileReader(accessProp().getProperty("currencyFile")));
 
 			sCurrentLine = br.readLine();
 			exchange = Double.parseDouble(sCurrentLine);
