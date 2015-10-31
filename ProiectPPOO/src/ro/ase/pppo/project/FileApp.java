@@ -1,26 +1,21 @@
 package ro.ase.pppo.project;
 
 public class FileApp {
-	private static String path = "D:/";
-	private static String name = "test";
-	
-	public static String getPath() {
-		return path;
-	}
-
-	public static void setPath(String path) {
-		FileApp.path = path;
-	}
-
-	public static String getName() {
-		return name;
-	}
-
-	public static void setName(String name) {
-		FileApp.name = name;
-	}
 
 	public static void main(String[] args){
+		
+		FileJobs jB = new FileJobs();
+		Props pS = new Props();
+		try{
+			jB.createFile(pS.accessProp().getProperty("filename"), pS.accessProp().getProperty("pathone"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		ReadXMLFile.readXwriteF();
+		
+		FileModerator.readFile();
+		
 		
 	}
 

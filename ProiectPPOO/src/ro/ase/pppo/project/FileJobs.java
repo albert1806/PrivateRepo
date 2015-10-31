@@ -9,6 +9,7 @@ public class FileJobs {
 		File f = new File(name+path+".txt");
 		
 		try {
+			f.mkdir();
 			if(f.createNewFile())
 				System.out.println("New file created: " + f.getPath());
 			else

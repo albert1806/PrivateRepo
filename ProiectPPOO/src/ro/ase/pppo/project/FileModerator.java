@@ -8,11 +8,16 @@ import java.util.List;
 
 public class FileModerator {
 	
-	static String fullPath = FileApp.getPath()+FileApp.getName()+".txt";
-	
 	public static void readFile(){
         try {
-            List<String> lines = Files.readAllLines(Paths.get(fullPath),Charset.defaultCharset());
+			Props pS = new Props();
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(pS.accessProp().getProperty("pathone"))
+					.append(pS.accessProp().getProperty("filename"))
+					.append(pS.accessProp().getProperty("extensionone"));
+			
+            List<String> lines = Files.readAllLines(Paths.get(sb.toString()),Charset.defaultCharset());
             for (String line : lines) {
                 System.out.println(line);
             }
@@ -21,11 +26,20 @@ public class FileModerator {
         }
 	}
 	
-	public static void writeToFile(String text){
+	public static void writeToFile(String text1, String text2){
 		try {
-		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fullPath, true)));
-		    out.println(text);
+			
+			Props pS = new Props();
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(pS.accessProp().getProperty("pathone"))
+					.append(pS.accessProp().getProperty("filename"))
+					.append(pS.accessProp().getProperty("extensionone"));
+			
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sb.toString(), true)));
+		    out.write(String.format("%20s %20s", text1, text2 + "\r\n"));
 		    out.close();
+		    
 		} catch (Exception e) {
 		   e.printStackTrace();
 		}
