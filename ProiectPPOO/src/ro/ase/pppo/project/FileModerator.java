@@ -12,8 +12,7 @@ public class FileModerator extends Props {
 
 		try {
 			File f = new File(accessProp().getProperty("createStore"));
-
-			f.mkdir();
+			
 			if (f.createNewFile())
 				System.out.println("New file created: " + f.getPath());
 			else
