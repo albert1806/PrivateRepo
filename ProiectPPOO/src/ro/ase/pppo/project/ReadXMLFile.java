@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class ReadXMLFile extends Props{
+public class ReadXMLFile{
 	public static void readXwriteF() {
 		
 		FileModerator.writeToFile("Attributes", "Values");
@@ -17,10 +17,9 @@ public class ReadXMLFile extends Props{
 			//TODO
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(new File(accessProp().getProperty("XML")));
+//			Document doc = dBuilder.parse(new File(accessProp().getProperty("XML")));
+			Document doc = dBuilder.parse(new File(Props.getInstance().getProperty("XML")));
 
-			// optional, but recommended
-			// read this -
 			// http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			
 			doc.getDocumentElement().normalize();

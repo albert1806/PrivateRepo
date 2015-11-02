@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ExchangeEuroRate extends Props{
+public class ExchangeEuroRate{
 	
 	public static double getCurencyExchangeRate() {
 
@@ -15,7 +15,8 @@ public class ExchangeEuroRate extends Props{
 		try {
 			String sCurrentLine;
 
-			br = new BufferedReader(new FileReader(accessProp().getProperty("currencyFile")));
+			//br = new BufferedReader(new FileReader(accessProp().getProperty("currencyFile")));
+			br = new BufferedReader(new FileReader(Props.getInstance().getProperty("currencyFile")));
 
 			sCurrentLine = br.readLine();
 			exchange = Double.parseDouble(sCurrentLine);
