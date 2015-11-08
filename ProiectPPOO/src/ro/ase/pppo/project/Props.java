@@ -10,7 +10,8 @@ public class Props {
 	private final Properties configProp = new Properties();
 
 	private Props() {
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("config.properties");
+		InputStream in = this.getClass().getClassLoader()
+				.getResourceAsStream("config.properties");
 		try {
 			configProp.load(in);
 		} catch (IOException e) {

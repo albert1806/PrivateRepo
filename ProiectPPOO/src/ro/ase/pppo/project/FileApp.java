@@ -6,7 +6,7 @@ public class FileApp {
 
 		FileModerator.createFile();
 
-		ReadXMLFile.readXwriteF();
+		ReadStoreCommandsXml.readXwriteF();
 
 		FileModerator.readFile();
 		

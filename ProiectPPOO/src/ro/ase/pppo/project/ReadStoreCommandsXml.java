@@ -8,28 +8,24 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class ReadXMLFile{
+public class ReadStoreCommandsXml{
 	public static void readXwriteF() {
-		
+		FileModerator.writeToFile("Current Date", CurrencyAndDateOfTransaction.getCurrentDate());
 		FileModerator.writeToFile("Attributes", "Values");
 		double totalValue = 0;
 		try {
 			//TODO
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//			Document doc = dBuilder.parse(new File(accessProp().getProperty("XML")));
-			Document doc = dBuilder.parse(new File(Props.getInstance().getProperty("XML")));
-
-			// http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			Document doc = dBuilder.parse(new File(Props.getInstance().getProperty("XMLStore")));
 			
-			doc.getDocumentElement().normalize();
+//			doc.getDocumentElement().normalize();
 
 			NodeList nList = doc.getElementsByTagName("product");
 			
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
 				Node nNode = nList.item(temp);
-//				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
@@ -46,22 +42,27 @@ public class ReadXMLFile{
 					String currency = eElement.getElementsByTagName("currency").item(0).getTextContent();
 					
 					double value = Double.parseDouble(quantity) * Double.parseDouble(price);
-					if(currency.equalsIgnoreCase("ron"))
+					if(currency.equalsIgnoreCase("ron")){
 						totalValue+=value;
+						FileModerator.writeToFile("**Product Value", String.valueOf(value) +" "+currency);
+						FileModerator.writeToFile(" ", " ");
+					}
 					else{
-						value = value * ExchangeEuroRate.getCurencyExchangeRate();
+						FileModerator.writeToFile("**Product Value in Currency", String.valueOf(value) +" "+currency + "=(1 "+currency+" = "+CurrencyAndDateOfTransaction.getCurencyExchangeRate(currency)+" RON)");
+						value = value * CurrencyAndDateOfTransaction.getCurencyExchangeRate(currency); 
+						FileModerator.writeToFile("**Product Value in RON", String.valueOf(value) + " RON");
+						FileModerator.writeToFile(" ", " ");
 						totalValue+=value;
 					} 
-					FileModerator.writeToFile("**Product Value", String.valueOf(value)+currency);
-					FileModerator.writeToFile(" ", " ");
+
 				}
 			}
 			FileModerator.writeToFile(" ", " ");
 			FileModerator.writeToFile(" ", " ");
-			FileModerator.writeToFile("Total Bill Value", String.valueOf(totalValue)+"RON");
+			FileModerator.writeToFile("Total Bill Value", String.valueOf(totalValue)+" RON");
+			FileModerator.writeToFile("//", "//");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

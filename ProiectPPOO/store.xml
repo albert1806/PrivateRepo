@@ -11,7 +11,14 @@
 		<productname>Table</productname>
 		<quantity>3</quantity>
 		<price>700</price>
-		<currency>RON</currency>
+		<currency>EUR</currency>
 		<category>4</category>
+	</product>
+	<product id="2">
+		<productname>Car</productname>
+		<quantity>2</quantity>
+		<price>1500</price>
+		<currency>USD</currency>
+		<category>3</category>
 	</product>
 </store>
