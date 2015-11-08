@@ -6,7 +6,7 @@ public class FileApp {
 
 		FileModerator.createFile();
 
-		ReadStoreCommandsXml.readXwriteF();
+		ReadStoreCommandsXml.generateStoreBill();
 
 		FileModerator.readFile();
 		

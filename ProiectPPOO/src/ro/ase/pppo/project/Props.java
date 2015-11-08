@@ -3,7 +3,6 @@ package ro.ase.pppo.project;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.Set;
 
 public class Props {
 	// TODO nu cred ca e facut pentru multithread

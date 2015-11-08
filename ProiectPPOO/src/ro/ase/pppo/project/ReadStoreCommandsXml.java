@@ -8,9 +8,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
 
-public class ReadStoreCommandsXml{
-	public static void readXwriteF() {
-		FileModerator.writeToFile("Current Date", CurrencyAndDateOfTransaction.getCurrentDate());
+public class ReadStoreCommandsXml {
+	public static void generateStoreBill() {
+		//FileModerator.writeToFile("Current Date", CurrencyAndDateOfTransaction.getCurrentDate());
+		CurrencyAndDateOfTransaction object2 = new CurrencyAndDateOfTransaction("");
+		String newDate = object2.date;
+		String baseCurrency = object2.baseCurrency;
+		FileModerator.writeToFile("Current Date", newDate);
+		FileModerator.writeToFile("Base Currency", baseCurrency);
 		FileModerator.writeToFile("Attributes", "Values");
 		double totalValue = 0;
 		try {
@@ -42,15 +47,23 @@ public class ReadStoreCommandsXml{
 					String currency = eElement.getElementsByTagName("currency").item(0).getTextContent();
 					
 					double value = Double.parseDouble(quantity) * Double.parseDouble(price);
-					if(currency.equalsIgnoreCase("ron")){
+					if(currency.equalsIgnoreCase(baseCurrency)){
 						totalValue+=value;
 						FileModerator.writeToFile("**Product Value", String.valueOf(value) +" "+currency);
 						FileModerator.writeToFile(" ", " ");
 					}
 					else{
-						FileModerator.writeToFile("**Product Value in Currency", String.valueOf(value) +" "+currency + "=(1 "+currency+" = "+CurrencyAndDateOfTransaction.getCurencyExchangeRate(currency)+" RON)");
-						value = value * CurrencyAndDateOfTransaction.getCurencyExchangeRate(currency); 
-						FileModerator.writeToFile("**Product Value in RON", String.valueOf(value) + " RON");
+						CurrencyAndDateOfTransaction object = new CurrencyAndDateOfTransaction(currency);
+						double valueCurrency = object.valueCurrency;
+						StringBuilder sb = new StringBuilder();
+						sb.append(String.valueOf(value))
+							.append(" ").append(currency).append("(1 ").append(currency)
+							.append(" = ").append(valueCurrency).append(" ")
+							.append(baseCurrency).append(" )");
+						FileModerator.writeToFile("**Product Value in Currency", sb.toString());
+						//value = value * CurrencyAndDateOfTransaction.getCurencyExchangeRate(currency); 
+						value = value*valueCurrency;
+						FileModerator.writeToFile("**Product Value in "+baseCurrency, String.valueOf(value)+" "+baseCurrency);
 						FileModerator.writeToFile(" ", " ");
 						totalValue+=value;
 					} 
@@ -59,8 +72,8 @@ public class ReadStoreCommandsXml{
 			}
 			FileModerator.writeToFile(" ", " ");
 			FileModerator.writeToFile(" ", " ");
-			FileModerator.writeToFile("Total Bill Value", String.valueOf(totalValue)+" RON");
-			FileModerator.writeToFile("//", "//");
+			FileModerator.writeToFile("Total Bill Value", String.valueOf(totalValue)+" "+baseCurrency);
+			FileModerator.writeToFile("//", "//"); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
