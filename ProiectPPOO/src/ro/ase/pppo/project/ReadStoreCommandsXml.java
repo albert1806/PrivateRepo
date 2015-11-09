@@ -1,7 +1,6 @@
 package ro.ase.pppo.project;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -9,22 +8,13 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 public class ReadStoreCommandsXml {
-	public static void generateStoreBill() {
-		//FileModerator.writeToFile("Current Date", CurrencyAndDateOfTransaction.getCurrentDate());
-		CurrencyAndDateOfTransaction object2 = new CurrencyAndDateOfTransaction("");
-		String newDate = object2.date;
-		String baseCurrency = object2.baseCurrency;
-		FileModerator.writeToFile("Current Date", newDate);
-		FileModerator.writeToFile("Base Currency", baseCurrency);
+	
+	private static void generateStoreBill() {
 		FileModerator.writeToFile("Attributes", "Values");
+
 		double totalValue = 0;
 		try {
-			//TODO
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(new File(Props.getInstance().getProperty("XMLStore")));
-			
-//			doc.getDocumentElement().normalize();
+			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(Props.getInstance().getProperty("XMLStore")));
 
 			NodeList nList = doc.getElementsByTagName("product");
 			
@@ -47,35 +37,42 @@ public class ReadStoreCommandsXml {
 					String currency = eElement.getElementsByTagName("currency").item(0).getTextContent();
 					
 					double value = Double.parseDouble(quantity) * Double.parseDouble(price);
-					if(currency.equalsIgnoreCase(baseCurrency)){
-						totalValue+=value;
-						FileModerator.writeToFile("**Product Value", String.valueOf(value) +" "+currency);
-						FileModerator.writeToFile(" ", " ");
-					}
-					else{
-						CurrencyAndDateOfTransaction object = new CurrencyAndDateOfTransaction(currency);
-						double valueCurrency = object.valueCurrency;
+					TrnDetails.generateItems(currency);
+					
+					if(!currency.equalsIgnoreCase(TrnDetails.getBaseCurrency())){
+						double valueCurrency  = TrnDetails.getValueCurrency();
+						
 						StringBuilder sb = new StringBuilder();
 						sb.append(String.valueOf(value))
 							.append(" ").append(currency).append("(1 ").append(currency)
 							.append(" = ").append(valueCurrency).append(" ")
-							.append(baseCurrency).append(" )");
+							.append(TrnDetails.getBaseCurrency()).append(" )");
 						FileModerator.writeToFile("**Product Value in Currency", sb.toString());
-						//value = value * CurrencyAndDateOfTransaction.getCurencyExchangeRate(currency); 
 						value = value*valueCurrency;
-						FileModerator.writeToFile("**Product Value in "+baseCurrency, String.valueOf(value)+" "+baseCurrency);
+						FileModerator.writeToFile("**Product Value in "+TrnDetails.getBaseCurrency(), String.valueOf(value)+" "+TrnDetails.getBaseCurrency());
 						FileModerator.writeToFile(" ", " ");
 						totalValue+=value;
+					}
+					else{			
+						totalValue+=value;
+						FileModerator.writeToFile("**Product Value", String.valueOf(value) +" "+currency);
+						FileModerator.writeToFile(" ", " ");
 					} 
 
 				}
 			}
+			
+			FileModerator.writeToFile("Current Date", TrnDetails.getDate());
+			FileModerator.writeToFile("Base Currency", TrnDetails.getBaseCurrency());
 			FileModerator.writeToFile(" ", " ");
 			FileModerator.writeToFile(" ", " ");
-			FileModerator.writeToFile("Total Bill Value", String.valueOf(totalValue)+" "+baseCurrency);
+			FileModerator.writeToFile("Total Bill Value", String.valueOf(totalValue)+" "+TrnDetails.getBaseCurrency());
 			FileModerator.writeToFile("//", "//"); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public static void generateBill(){
+		generateStoreBill();
 	}
 }
