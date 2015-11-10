@@ -8,6 +8,24 @@ import java.util.List;
 
 public class FileModerator {
 
+	public static void createFile(boolean deletePreviousFile) {
+
+		try {
+			File f = new File(Props.getInstance().getProperty("createStore"));
+			if (f.createNewFile())
+				System.out.println("New file created: " + f.getPath());
+			else{	
+				System.out.println("File already exists, performing delete & create");
+				f.delete();
+				f.createNewFile();
+				System.out.println("New file created: " + f.getPath());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public static void createFile() {
 
 		try {
@@ -15,13 +33,13 @@ public class FileModerator {
 			if (f.createNewFile())
 				System.out.println("New file created: " + f.getPath());
 			else
-				System.out.println("File already exists");
+				System.out.println("File already exists, performing delete & create");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-
+	
 	public static void readFile() {
 		try {
 			List<String> lines = Files.readAllLines(Paths.get(Props.getInstance().getProperty("createStore")),Charset.defaultCharset());
